@@ -13,6 +13,9 @@ COPY . /app/
 
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
+
+RUN alembic init alembic
+RUN alembic revision --autogenerate -m "Create tables"
 RUN alembic upgrade head
 
 ENV PYTHONUNBUFFERED 1

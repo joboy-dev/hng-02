@@ -1,8 +1,7 @@
 import datetime as dt
 import uuid
 
-from fastapi import HTTPException, status, Depends
-from fastapi.responses import JSONResponse
+from fastapi import status, Depends
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 from jose import JWTError, jwt
@@ -11,7 +10,6 @@ from app.config import settings
 from app.api.user import models, schemas
 from app.database import get_db
 from app.utilities.exceptions import CustomHTTPException
-from app.utilities.response import make_response
 
 oauth2_scheme = OAuth2PasswordBearer('/auth/login')
 

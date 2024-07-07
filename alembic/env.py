@@ -22,7 +22,7 @@ from app.api.organisation.models import Base
 
 target_metadata = Base.metadata
 
-config.set_main_option('sqlalchemy.url', f"postgresql://{settings.user}:{settings.password}@{settings.hostname}:{settings.port}/{settings.db_name}")
+config.set_main_option('sqlalchemy.url', f"postgresql://{settings.user}:{settings.password}@{settings.hostname}:{settings.db_port}/{settings.db_name}")
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:

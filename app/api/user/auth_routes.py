@@ -60,7 +60,7 @@ def register(schema: schemas.RegisterSchema, db: Session =  Depends(get_db)):
     return make_response(
         status='success',
         message='Registration successful.',
-        status_code=status.HTTP_200_OK,
+        status_code=status.HTTP_201_CREATED,
         data={
             'accessToken': access_token,
             'user': user_dict

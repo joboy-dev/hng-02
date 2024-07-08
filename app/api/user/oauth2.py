@@ -28,6 +28,14 @@ def create_access_token(data: dict) -> str:
     return encoded_jwt
 
 
+def decode_token(token: str):
+    '''Returns the decoded version of the token'''
+
+    payload = jwt.decode(token, settings.secret_key, algorithms=[settings.algorithm])
+
+    return payload
+
+
 def verify_access_token(access_token: str, credentials_exception):
     '''Funtcion to decode and verify access token'''
     

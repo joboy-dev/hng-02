@@ -50,7 +50,7 @@ def create_organisation(schema: schemas.CreateOrganisation, db: Session = Depend
 
 @org_router.get('/{orgId}', status_code=status.HTTP_200_OK)
 def get_single_organisation(orgId: str, db: Session = Depends(get_db), current_user: user_models.User = Depends(oauth2.get_current_user)):
-    '''Endpoint to get all organizations of the current user'''
+    '''Endpoint to get a single organisation'''
 
     # Check if organisation exists
     organisation = validation.check_model_existence(db, models.Organisation, orgId)

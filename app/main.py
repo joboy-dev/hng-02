@@ -7,7 +7,6 @@ app = FastAPI(
     title='HNG Stage 2 Task',
     description='User Authentication and Organisation',
     version='v1',
-    docs_url='/'
 )
 
 # Add middleware

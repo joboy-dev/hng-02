@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, Response, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm.session import Session
 
@@ -41,11 +41,11 @@ def register(schema: schemas.RegisterSchema, db: Session =  Depends(get_db)):
     db.refresh(user)
 
     # Create access token for user
-    access_token = oauth2.create_access_token(data={'user_id': user.user_id})
+    access_token = oauth2.create_access_token(data={'userId': user.userId})
 
     # Create organisation for user
     organisation = org_models.Organisation(
-        name=f"{schema.first_name}'s Organisation",
+        name=f"{schema.firstName}'s Organisation",
     )
     db.add(organisation)
     db.commit()
@@ -62,7 +62,7 @@ def register(schema: schemas.RegisterSchema, db: Session =  Depends(get_db)):
         message='Registration successful.',
         status_code=status.HTTP_200_OK,
         data={
-            'access_token': access_token,
+            'accessToken': access_token,
             'user': user_dict
         }
     )
@@ -88,7 +88,7 @@ def login(user_credentials: forms.LoginForm = Depends(), db: Session = Depends(g
         )
     
     # Create access token and pass data to be encoded into the token
-    access_token = oauth2.create_access_token({'user_id': user.user_id})
+    access_token = oauth2.create_access_token({'userId': user.userId})
 
     # Convert user model to dictionary
     user_dict = general.convert_model_to_dict(user, fields_to_remove=['password'])
@@ -97,7 +97,7 @@ def login(user_credentials: forms.LoginForm = Depends(), db: Session = Depends(g
         'status': 'success',
         'message': 'Registration successful',
         'data': {
-            'access_token': access_token,
+            'accessToken': access_token,
             'user': user_dict
         }
     }

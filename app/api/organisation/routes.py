@@ -48,12 +48,12 @@ def create_organisation(schema: schemas.CreateOrganisation, db: Session = Depend
     )
 
 
-@org_router.get('/{org_id}', status_code=status.HTTP_200_OK)
-def get_single_organisation(org_id: str, db: Session = Depends(get_db), current_user: user_models.User = Depends(oauth2.get_current_user)):
+@org_router.get('/{orgId}', status_code=status.HTTP_200_OK)
+def get_single_organisation(orgId: str, db: Session = Depends(get_db), current_user: user_models.User = Depends(oauth2.get_current_user)):
     '''Endpoint to get all organizations of the current user'''
 
     # Check if organisation exists
-    organisation = validation.check_model_existence(db, models.Organisation, org_id)
+    organisation = validation.check_model_existence(db, models.Organisation, orgId)
     
     # Check if current logged in user is not in the organisation's members to restrict access
     permissions.is_organization_member(user=current_user, organisation=organisation)
@@ -66,15 +66,15 @@ def get_single_organisation(org_id: str, db: Session = Depends(get_db), current_
     )
 
 
-@org_router.post('/{org_id}/users', status_code=status.HTTP_200_OK)
-def add_user_to_organisation(schema: schemas.AddUserToOrganisation, org_id: str, db: Session = Depends(get_db), current_user: user_models.User = Depends(oauth2.get_current_user)):
+@org_router.post('/{orgId}/users', status_code=status.HTTP_200_OK)
+def add_user_to_organisation(schema: schemas.AddUserToOrganisation, orgId: str, db: Session = Depends(get_db), current_user: user_models.User = Depends(oauth2.get_current_user)):
     '''Endpoint to add user to organization'''
 
     # Check if organisation exists
-    organisation = validation.check_model_existence(db, models.Organisation, org_id)
+    organisation = validation.check_model_existence(db, models.Organisation, orgId)
     
     # Check if user exists
-    user = validation.check_model_existence(db, user_models.User, schema.user_id)
+    user = validation.check_model_existence(db, user_models.User, schema.userId)
     
     # Check if current logged in user is not in the organisation's members to restrict access
     permissions.is_organization_member(user=current_user, organisation=organisation)

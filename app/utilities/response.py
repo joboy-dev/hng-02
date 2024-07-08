@@ -13,6 +13,6 @@ def make_response(status: str, message: str, status_code: int, data: Optional[An
         response['data'] = data
     
     if status_code not in [200, 201]:
-        response['status_code'] = status_code
+        response['statusCode'] = status_code
 
     return JSONResponse(content=response, status_code=status_code)

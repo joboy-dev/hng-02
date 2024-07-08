@@ -7,7 +7,7 @@ from pydantic import BaseModel
 class BaseOrganisationResponse(BaseModel):
     '''Base response schema for organisations'''
 
-    org_id: str
+    orgId: str
     name: str
     description: str | None
 
@@ -31,5 +31,5 @@ class CreateOrganisation(BaseModel):
 class AddUserToOrganisation(BaseModel):
     '''Schema for adding users to organisations'''
 
-    user_id: str
+    userId: str
     

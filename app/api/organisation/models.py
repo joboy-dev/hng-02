@@ -8,16 +8,17 @@ from app.utilities.general import generate_id
 user_organisation = sa.Table(
     'user_organisation', 
     Base.metadata,
-    sa.Column('user_id', sa.String, sa.ForeignKey('users.user_id'), primary_key=True),
-    sa.Column('organisation_id', sa.String, sa.ForeignKey('organisations.org_id'), primary_key=True)
+    sa.Column('userId', sa.String, sa.ForeignKey('users.userId'), primary_key=True),
+    sa.Column('organisation_id', sa.String, sa.ForeignKey('organisations.orgId'), primary_key=True)
 )
 
 
 class Organisation(Base):
     '''Organisation table model'''
+    
     __tablename__ = 'organisations'
 
-    org_id = sa.Column(sa.String, primary_key=True, default=generate_id)
+    orgId = sa.Column(sa.String, primary_key=True, default=generate_id)
     name = sa.Column(sa.String, index=True, nullable=False)
     description = sa.Column(sa.String, nullable=True)
 

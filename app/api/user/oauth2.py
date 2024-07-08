@@ -13,12 +13,12 @@ from app.utilities.exceptions import CustomHTTPException
 
 oauth2_scheme = OAuth2PasswordBearer('/auth/login')
 
-def create_access_token(data: dict) -> str:
-    '''Function to create access tpken'''
+def create_access_token(data: dict, hours: float = settings.access_token_expire_hours) -> str:
+    '''Function to create access token'''
     
     data_to_encode = data.copy()
     
-    expires = dt.datetime.now(dt.UTC) + dt.timedelta(hours=settings.access_token_expire_hours)
+    expires = dt.datetime.now(dt.UTC) + dt.timedelta(hours=hours)
     data_to_encode.update({
         'exp': expires,
         'type': 'access'
@@ -31,7 +31,13 @@ def create_access_token(data: dict) -> str:
 def decode_token(token: str):
     '''Returns the decoded version of the token'''
 
-    payload = jwt.decode(token, settings.secret_key, algorithms=[settings.algorithm])
+    try:
+        payload = jwt.decode(token, settings.secret_key, algorithms=[settings.algorithm])
+    except JWTError:
+        raise CustomHTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail='Invalid token'
+        )
 
     return payload
 

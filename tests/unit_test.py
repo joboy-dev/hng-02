@@ -1,3 +1,6 @@
+from time import sleep
+
+import pytest
 from app.api.user.models import User
 from app.api.organisation.models import Organisation
 from app.api.user.oauth2 import create_access_token, decode_token
@@ -24,6 +27,15 @@ def test_token_generation(client, test_db):
 
     assert decoded_token['userId'] == user.userId
     assert 'exp' in decoded_token
+
+
+def test_token_expiration(client):
+    '''Test for token expiration'''
+    
+    token = create_access_token(data={"user_id": "someid"}, hours=0.001)
+    sleep(5)
+    with pytest.raises(Exception):
+        decode_token(token)
 
 
 def test_organisation_access(client, test_db):

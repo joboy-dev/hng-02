@@ -1,6 +1,4 @@
-from app.api.user.models import User
 from app.api.organisation.models import Organisation
-from app.api.user.oauth2 import create_access_token, decode_token
 
 def test_register(client, test_db):
     '''Test for register endpoint'''
@@ -39,6 +37,9 @@ def test_missing_fields(client):
         "password": "Johndoe@123",
         "phone": '0904712346'
     })
+    assert miss_firstname_res.status_code == 422
+    assert miss_firstname_res.json()['errors'][0]['field'] == 'firstName'
+    assert miss_firstname_res.json()['errors'][0]['message'] == 'Field required'
 
     miss_lastname_res = client.post("/auth/register", json={
         "firstName": "John",
@@ -46,6 +47,9 @@ def test_missing_fields(client):
         "password": "Johndoe@123",
         "phone": '0904712346'
     })
+    assert miss_lastname_res.status_code == 422
+    assert miss_lastname_res.json()['errors'][0]['field'] == 'lastName'
+    assert miss_lastname_res.json()['errors'][0]['message'] == 'Field required'
 
     miss_email_res = client.post("/auth/register", json={
         "firstName": "John",
@@ -53,6 +57,9 @@ def test_missing_fields(client):
         "password": "Johndoe@123",
         "phone": '0904712346'
     })
+    assert miss_email_res.status_code == 422
+    assert miss_email_res.json()['errors'][0]['field'] == 'email'
+    assert miss_email_res.json()['errors'][0]['message'] == 'Field required'
 
     miss_password_res = client.post("/auth/register", json={
         "firstName": "John",
@@ -60,19 +67,6 @@ def test_missing_fields(client):
         "email": "john.doe@gmail.com",
         "phone": '0904712346'
     })
-
-    assert miss_firstname_res.status_code == 422
-    assert miss_firstname_res.json()['errors'][0]['field'] == 'firstName'
-    assert miss_firstname_res.json()['errors'][0]['message'] == 'Field required'
-
-    assert miss_lastname_res.status_code == 422
-    assert miss_lastname_res.json()['errors'][0]['field'] == 'lastName'
-    assert miss_lastname_res.json()['errors'][0]['message'] == 'Field required'
-
-    assert miss_email_res.status_code == 422
-    assert miss_email_res.json()['errors'][0]['field'] == 'email'
-    assert miss_email_res.json()['errors'][0]['message'] == 'Field required'
-
     assert miss_password_res.status_code == 422
     assert miss_password_res.json()['errors'][0]['field'] == 'password'
     assert miss_password_res.json()['errors'][0]['message'] == 'Field required'

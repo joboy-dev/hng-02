@@ -29,7 +29,7 @@ def test_token_generation(client, test_db):
 def test_organisation_access(client, test_db):
     '''Test for organization access'''
 
-    # Create user
+    # Create users
     user1 = User(
         email='test1@gmail.com',
         password='Korede@036',
@@ -49,15 +49,19 @@ def test_organisation_access(client, test_db):
     test_db.add(user2)
     test_db.commit()
 
+    # Create organisation for user1
     organisation = Organisation(name="User1 Org")
     test_db.add(organisation)
     test_db.commit()
 
+    # Add organisation to user1's organisation list
     user1.organisations.append(organisation)
     test_db.commit()
 
+    # create access token foruser 2
     access_token = create_access_token(data={"userId": user2.userId})
     
+    # Try to access user1's organisation with user2's token
     response = client.get(
         f"/api/organisations/{organisation.orgId}",
         headers={"Authorization": f"Bearer {access_token}"}

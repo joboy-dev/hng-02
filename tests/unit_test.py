@@ -31,8 +31,8 @@ def test_token_generation(client, test_db):
 
 def test_token_expiration(client):
     '''Test for token expiration'''
-    
-    token = create_access_token(data={"user_id": "someid"}, hours=0.001)
+
+    token = create_access_token(data={"userId": "24a14674ghtur7ijgko84"}, hours=0.001)
     sleep(5)
     with pytest.raises(Exception):
         decode_token(token)

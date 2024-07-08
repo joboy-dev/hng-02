@@ -2,7 +2,6 @@ from app.api.user.models import User
 from app.api.organisation.models import Organisation
 from app.api.user.oauth2 import create_access_token, decode_token
 
-# Unit Tests
 def test_token_generation(client, test_db):
     '''Test for token generation'''
 
@@ -66,8 +65,3 @@ def test_organisation_access(client, test_db):
     
     assert response.status_code == 400
     assert response.json()["message"] == "You are not a member of this organisation"
-
-
-
-
-# End-to-End Tests

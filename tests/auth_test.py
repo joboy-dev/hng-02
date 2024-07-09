@@ -91,15 +91,14 @@ def test_reegister_duplicate_email(client, test_db):
 def test_login(client, test_db):
     '''Test for login endpoint'''
 
-    success_response = client.post("/auth/login", data={
+    success_response = client.post("/auth/login", json={
         "email": "john.doe@gmail.com",
         "password": "Johndoe@123",
     })
+    assert success_response.status_code == 200
 
-    error_response = client.post("/auth/login", data={
+    error_response = client.post("/auth/login", json={
         "email": "john.doe1@gmail.com",
         "password": "Johndoe@123",
     })
-
-    assert success_response.status_code == 200
     assert error_response.status_code == 400

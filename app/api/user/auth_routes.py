@@ -69,7 +69,7 @@ def register(schema: schemas.RegisterSchema, db: Session =  Depends(get_db)):
     
 
 @auth_router.post('/login', status_code=status.HTTP_200_OK)
-def login(user_credentials: forms.LoginForm = Depends(), db: Session = Depends(get_db)):
+def login(schema: schemas.LoginSchema, db: Session = Depends(get_db)):
     '''
         Endpoint to log in a user with email and password. An access token will be provided as the response.\n
         Ensure to enter your email in the username field.
@@ -79,9 +79,9 @@ def login(user_credentials: forms.LoginForm = Depends(), db: Session = Depends(g
     '''
     
     # Check if email exists in database and perform password checks
-    user = db.query(models.User).filter(models.User.email == user_credentials.email).first()
+    user = db.query(models.User).filter(models.User.email == schema.email).first()
     
-    if not user or not validation.verify_password(password=user_credentials.password, hash=user.password):
+    if not user or not validation.verify_password(password=schema.password, hash=user.password):
         raise CustomHTTPException(
             detail='Authentication failed',
             status_code=status.HTTP_400_BAD_REQUEST
